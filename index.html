@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Gästbok</title>
+</head>
+<body>
+  
+<div class="container mt-5">
+  <h1 class="mb-4 text-center"> Musa's Gästbok</h1>
+
+  <form id="guestbookForm" action="/addEntry" method="post">
+    <div class="form-group">
+      <label for="name">Namn:</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Namn" required autocomplete="name">
+      <label for="Telefon">Telefon:</label>
+      <input type="text" class="form-control" id="Telefon" name="telefon" placeholder="Telefon" required autocomplete="tel">
+      <label for="E-post">email:</label>
+      <input type="text" class="form-control" id="E-post" name="email" placeholder="email" required autocomplete="email">
+    </div>
+
+    <div class="form-group">
+      <label for="message">Meddelande:</label>
+      <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" onclick="playSound()">Lämna meddelande</button>
+    <audio id="message-sound" controls style="display: none;">
+      <source src="rock-cinematic-161648.mp3" type="audio/mpeg">
+    </audio>
+   
+  </form>
+
+  <div class="mt-5" id="guestbookEntries"></div>
+  
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#guestbookForm').submit(async function(event) {
+    event.preventDefault();
+    const data = $(this).serialize();
+    const response = await $.post('/addEntry', data);
+
+    $('#guestbookEntries').prepend(response);
+    $('#guestbookForm')[0].reset(); 
+  });
+});
+
+
+    function playSound() {
+      var audio = document.getElementById('message-sound');
+      audio.play();
+    }</script>
+
+</body>
+</html>
