@@ -9,24 +9,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
 const guestbookFilePath = path.join(__dirname, 'guestbook.json');
-/*
-async function readGuestbookFile() {
-  try {
-    const data = await fs.readFile(guestbookFilePath, 'utf8');
-    const cachedEntries = JSON.parse(data);
-    return cachedEntries;
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      console.error(`File ${guestbookFilePath} does not exist. Creating a new file.`);
-      await fs.writeFile(guestbookFilePath, '[]', 'utf8');
-      return [];
-    } else {
-      console.error('Error reading guestbook.json', err);
-      throw err;
-    }
-  }
-}*/
-async function readGuestbookFile() {
+
+async function readGuestbookFile()  {
   try {
     await fs.access(guestbookFilePath);
     const data = await fs.readFile(guestbookFilePath, 'utf8');
@@ -42,7 +26,8 @@ async function readGuestbookFile() {
       throw err;
     }
   }
-}
+};  
+
 
 
 async function saveGuestbookEntriesToFile(entries) {
@@ -94,14 +79,14 @@ app.get('/', async function (req, res) {
       </head>
       <body>
         <div class="container mt-5">
-          <h1 class="mb-4">Välkommen till min Gästbok</h1>
+          <h1 class="mb-4">Musa's Gästbok</h1>
           <form id="guestbookForm" action="/addEntry" method="post">
             <div class="form-group">
-              <label for="name">Namn:</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Namn" required autocomplete="name">
-              <label for="Telefon">Telefon:</label>
+              <label ="name">Namn:</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="name" required autocomplete="name">
+              <label ="Telefon">Telefon:</label>
               <input type="text" class="form-control" id="Telefon" name="telefon" placeholder="Telefon" required autocomplete="tel">
-              <label for="email">email:</label>
+              <label ="email">email:</label>
               <input type="text" class="form-control" id="E-post" name="email" placeholder="email" required autocomplete="email">
             </div>
             <div class="form-group">
@@ -126,6 +111,10 @@ app.get('/', async function (req, res) {
               $('#guestbookForm')[0].reset(); 
             });
           });
+          function playSound() {
+            var audio = document.getElementById('message-sound');
+            audio.play();
+          }
         </script>
       </body>
     </html>
@@ -142,6 +131,7 @@ app.post('/addEntry', async (req, res) => {
     const telefon = req.body.telefon;
     const email = req.body.email;
     const message = req.body.message;
+
 
     const timestamp = getFormattedTimestamp();
     const newEntry = { name, telefon, email, message, timestamp };
