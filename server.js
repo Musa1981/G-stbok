@@ -11,6 +11,7 @@ app.use(express.static(__dirname));
 const guestbookFilePath = path.join(__dirname, 'guestbook.json');
 
 async function readGuestbookFile()  {
+  
   try {
     await fs.access(guestbookFilePath);
     const data = await fs.readFile(guestbookFilePath, 'utf8');
@@ -123,6 +124,7 @@ app.get('/', async function (req, res) {
     console.error('Error reading guestbook file:', error);
     res.status(500).send('Internal Server Error');
   }
+
 });
 
 app.post('/addEntry', async (req, res) => {
